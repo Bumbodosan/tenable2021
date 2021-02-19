@@ -1,8 +1,6 @@
 '''
 Takes '+' and ' ' delimited data of chess matches and parses into list of seperate matches
 '''
-
-
 def ParseMatches(chess_matches):
     return [c.split('+') for c in chess_matches.split(' ')]
 
@@ -11,8 +9,6 @@ x_axis = "abcdefgh"
 
 colors = ["b", "w"]
 pieces = ["q", "k", "b", "r", "n", "p"]
-
-matches = ParseMatches("w,p,c6+w,q,c8+w,p,g7+w,k,e5+b,b,b2+b,p,f3+b,k,f1")
 
 board = [[(None, None) for x in range(8)] for y in range(8)]
 
