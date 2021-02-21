@@ -1,6 +1,3 @@
-'''
-Takes '+' and ' ' delimited data of chess matches and parses into list of seperate matches
-'''
 def ParseMatches(chess_matches):
     return [c.split('+') for c in chess_matches.split(' ')]
 
@@ -10,15 +7,15 @@ x_axis = "abcdefgh"
 colors = ["b", "w"]
 pieces = ["q", "k", "b", "r", "n", "p"]
 
-board = [[(None, None) for x in range(8)] for y in range(8)]
-
 def getCoord(coord):
     x = x_axis.index(coord[0])
     y = int(coord[1]) - 1
     return x, y
 
+
 def checkPiece(board, piece, x, y):
     return board[y][x] == piece
+
 
 def moveloop(board, x, y, dx, dy, piecesToCheck):
     currentcolor = board[y][x][0]
@@ -34,6 +31,7 @@ def moveloop(board, x, y, dx, dy, piecesToCheck):
             return True
     return False
 
+
 def rook(board, x, y):
     for direction in range(0, 4):
         dx = 0 if direction % 2 == 0 else direction - 2
@@ -44,6 +42,7 @@ def rook(board, x, y):
 
     return False
 
+
 def bishop(board, x, y):
     for ydir in range(0, 2):
         dy = -1 + (ydir * 2)
@@ -53,6 +52,7 @@ def bishop(board, x, y):
             if runsinto == True:
                 return True
     return False
+
 
 def knight(board, x, y):
     currentcolor = board[y][x][0]
@@ -75,6 +75,7 @@ def knight(board, x, y):
                 return True
     return False
 
+
 def pawn(board, x, y):
     currentcolor = board[y][x][0]
     dy = 1 if currentcolor == colors.index("w") else -1
@@ -90,6 +91,7 @@ def pawn(board, x, y):
         if pieceAtPos[1] == pieces.index("p"):
             return True
     return False
+
 
 def king(board, x, y):
     currentcolor = board[y][x][0]
@@ -112,12 +114,16 @@ def king(board, x, y):
                 return True
     return False
 
+
 def checkPieces(board, pos):
     return rook(board, pos[0], pos[1]) or bishop(board, pos[0], pos[1]) or knight(board, pos[0], pos[1]) or pawn(board, pos[0], pos[1]) or king(board, pos[0], pos[1])
+
 
 def IsKingInCheck(chess_match):
     whiteking = None
     blackking = None
+
+    board = [[(None, None) for x in range(8)] for y in range(8)]
     for info in chess_match:
         split = info.split(",")
         color = colors.index(split.pop(0))
@@ -130,7 +136,13 @@ def IsKingInCheck(chess_match):
             else:
                 blackking = (x, y)
 
-    return checkPieces(board, whiteking)
+    isInCheck = False
+    if whiteking and checkPieces(board, whiteking):
+        isInCheck = True
+    if blackking and checkPieces(board, blackking):
+        isInCheck = True
+    return isInCheck
+
 
 result = []
 chess_matches = ParseMatches(raw_input())
